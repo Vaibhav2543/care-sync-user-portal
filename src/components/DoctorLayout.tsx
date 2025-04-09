@@ -52,7 +52,7 @@ const DoctorLayout: React.FC<DoctorLayoutProps> = ({ children, title }) => {
       <aside className="w-full md:w-64 bg-white border-r border-gray-200 p-4">
         <div className="flex items-center justify-between mb-8 px-2">
           <Link to="/doctor/dashboard">
-            <Logo />
+            <Logo variant="sidebar" />
           </Link>
           <div className="text-xs font-medium px-2 py-1 bg-secondary text-white rounded-full">
             Doctor
