@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Pages
+// Pages - User
 import SplashScreen from "./pages/SplashScreen";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,6 +16,17 @@ import QrCode from "./pages/QrCode";
 import DocumentHistory from "./pages/DocumentHistory";
 import DocumentView from "./pages/DocumentView";
 import Hospitals from "./pages/Hospitals";
+import HelpPage from "./pages/HelpPage";
+
+// Pages - Doctor
+import DoctorLogin from "./pages/DoctorLogin";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import PatientList from "./pages/PatientList";
+import PatientView from "./pages/PatientView";
+import DocumentReviews from "./pages/DocumentReviews";
+import DoctorHelpPage from "./pages/DoctorHelpPage";
+
+// Common Pages
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,19 +38,28 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Authentication Routes */}
+          {/* Common Routes */}
           <Route path="/" element={<SplashScreen />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/auth-success" element={<AuthSuccess />} />
           
-          {/* Dashboard Routes */}
+          {/* Patient/User Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<UploadDocument />} />
           <Route path="/qr-code" element={<QrCode />} />
           <Route path="/history" element={<DocumentHistory />} />
           <Route path="/document/:id" element={<DocumentView />} />
           <Route path="/hospitals" element={<Hospitals />} />
+          <Route path="/help" element={<HelpPage />} />
+          
+          {/* Doctor Routes */}
+          <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor/patients" element={<PatientList />} />
+          <Route path="/doctor/patients/:id" element={<PatientView />} />
+          <Route path="/doctor/reviews" element={<DocumentReviews />} />
+          <Route path="/doctor/help" element={<DoctorHelpPage />} />
           
           {/* Redirects */}
           <Route path="/index" element={<Navigate to="/" replace />} />

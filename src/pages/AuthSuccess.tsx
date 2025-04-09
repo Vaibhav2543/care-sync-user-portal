@@ -1,19 +1,25 @@
 
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "@/components/Logo";
 import { Check } from "lucide-react";
 
 const AuthSuccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(() => {
+    // Check if we came from a doctor route to determine where to redirect
+    const isDoctor = location.pathname.includes("doctor") || 
+                    location.state?.userType === "doctor" ||
+                    document.referrer.includes("doctor");
+    
     const timer = setTimeout(() => {
-      navigate("/dashboard");
+      navigate(isDoctor ? "/doctor/dashboard" : "/dashboard");
     }, 3000);
     
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex flex-col items-center justify-center p-4">

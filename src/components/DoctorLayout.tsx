@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { Home, Upload, QrCode, History, Hospital, LogOut, HelpCircle } from "lucide-react";
+import { Users, ClipboardList, Hospital, HelpCircle, LogOut } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface NavItemProps {
@@ -18,7 +18,7 @@ const NavItem: React.FC<NavItemProps> = ({ to, label, icon, active }) => {
       to={to}
       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
         active
-          ? "bg-primary text-white"
+          ? "bg-secondary text-white"
           : "text-gray-700 hover:bg-gray-100"
       }`}
     >
@@ -28,12 +28,12 @@ const NavItem: React.FC<NavItemProps> = ({ to, label, icon, active }) => {
   );
 };
 
-interface DashboardLayoutProps {
+interface DoctorLayoutProps {
   children: React.ReactNode;
   title: string;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) => {
+const DoctorLayout: React.FC<DoctorLayoutProps> = ({ children, title }) => {
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -51,50 +51,38 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-white border-r border-gray-200 p-4">
         <div className="flex items-center justify-between mb-8 px-2">
-          <Link to="/dashboard">
+          <Link to="/doctor/dashboard">
             <Logo />
           </Link>
-          <div className="text-xs font-medium px-2 py-1 bg-primary text-white rounded-full">
-            Patient
+          <div className="text-xs font-medium px-2 py-1 bg-secondary text-white rounded-full">
+            Doctor
           </div>
         </div>
         
         <nav className="space-y-2">
           <NavItem
-            to="/dashboard"
+            to="/doctor/dashboard"
             label="Dashboard"
-            icon={<Home size={20} />}
-            active={location.pathname === "/dashboard"}
-          />
-          <NavItem
-            to="/upload"
-            label="Upload Documents"
-            icon={<Upload size={20} />}
-            active={location.pathname === "/upload"}
-          />
-          <NavItem
-            to="/qr-code"
-            label="Emergency QR"
-            icon={<QrCode size={20} />}
-            active={location.pathname === "/qr-code"}
-          />
-          <NavItem
-            to="/history"
-            label="Document History"
-            icon={<History size={20} />}
-            active={location.pathname === "/history" || location.pathname.startsWith("/document/")}
-          />
-          <NavItem
-            to="/hospitals"
-            label="Hospitals"
             icon={<Hospital size={20} />}
-            active={location.pathname === "/hospitals"}
+            active={location.pathname === "/doctor/dashboard"}
           />
           <NavItem
-            to="/help"
+            to="/doctor/patients"
+            label="Patient Records"
+            icon={<Users size={20} />}
+            active={location.pathname === "/doctor/patients" || location.pathname.startsWith("/doctor/patients/")}
+          />
+          <NavItem
+            to="/doctor/reviews"
+            label="Document Reviews"
+            icon={<ClipboardList size={20} />}
+            active={location.pathname === "/doctor/reviews" || location.pathname.startsWith("/doctor/reviews/")}
+          />
+          <NavItem
+            to="/doctor/help"
             label="Help Center"
             icon={<HelpCircle size={20} />}
-            active={location.pathname === "/help"}
+            active={location.pathname === "/doctor/help"}
           />
         </nav>
         
@@ -122,4 +110,4 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   );
 };
 
-export default DashboardLayout;
+export default DoctorLayout;
