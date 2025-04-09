@@ -33,7 +33,8 @@ const DoctorLogin = () => {
           description: "Welcome back, Dr. Sarah Johnson",
         });
         
-        navigate("/auth-success");
+        // Pass userType in state to help with redirect
+        navigate("/auth-success", { state: { userType: "doctor" } });
       } else {
         toast({
           title: "Login failed",
@@ -109,7 +110,7 @@ const DoctorLogin = () => {
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-600">
           Don't have a doctor account?{" "}
-          <Link to="/register" className="text-primary hover:underline font-medium">
+          <Link to="/doctor/login" className="text-primary hover:underline font-medium">
             Contact administrator
           </Link>
         </p>
