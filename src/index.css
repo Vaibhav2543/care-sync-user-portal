@@ -142,3 +142,77 @@
 .caresync-page-transition {
   animation: fade-in 0.3s ease-out forwards;
 }
+
+/* New animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-light {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-light {
+  animation: pulse-light 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes rotate-3d {
+  0% {
+    transform: rotateX(0) rotateY(0);
+  }
+  50% {
+    transform: rotateX(10deg) rotateY(10deg);
+  }
+  100% {
+    transform: rotateX(0) rotateY(0);
+  }
+}
+
+.animate-rotate-3d {
+  animation: rotate-3d 10s ease infinite;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
