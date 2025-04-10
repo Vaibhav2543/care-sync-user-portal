@@ -2,6 +2,7 @@
 import React from "react";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
+import { Stethoscope, Shield } from "lucide-react";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -35,6 +36,14 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
               <div className="absolute inset-0 bg-white/10 rounded-2xl rotate-6 animate-float"></div>
               <div className="absolute inset-0 bg-white/20 rounded-2xl -rotate-6 animate-float" style={{ animationDelay: "1s" }}></div>
               <div className="absolute inset-0 bg-white/30 rounded-2xl rotate-3 animate-float" style={{ animationDelay: "2s" }}></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-white/10 p-6 rounded-full">
+                  <div className="relative">
+                    <Shield className="h-24 w-24 text-white/20" strokeWidth={1} />
+                    <Stethoscope className="h-12 w-12 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

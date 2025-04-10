@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "@/components/Logo";
+import { Stethoscope } from "lucide-react";
 
 const SplashScreen = () => {
   const [loaded, setLoaded] = useState(false);
@@ -27,7 +28,9 @@ const SplashScreen = () => {
             <div className="relative mx-auto w-48 h-48">
               <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse-light"></div>
               <div className="absolute inset-0 rounded-full bg-white/5 animate-rotate-3d"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/20 rounded-lg animate-float"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/20 rounded-lg animate-float flex items-center justify-center">
+                <Stethoscope className="w-12 h-12 text-white" strokeWidth={1.5} />
+              </div>
             </div>
           </div>
           
