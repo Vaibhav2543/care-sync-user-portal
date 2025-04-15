@@ -1,14 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stethoscope, Shield, CheckCircle2, RefreshCcw } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { 
-  InputOTP, 
-  InputOTPGroup, 
-  InputOTPSlot 
-} from "@/components/ui/input-otp";
+import VerificationHeader from "@/components/verification/VerificationHeader";
+import OtpInput from "@/components/verification/OtpInput";
+import VerifyButton from "@/components/verification/VerifyButton";
+import ResendButton from "@/components/verification/ResendButton";
 
 const PatientOtpVerification = () => {
   const navigate = useNavigate();
@@ -88,21 +85,7 @@ const PatientOtpVerification = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white text-center">
-          <div className="mb-4 relative inline-block">
-            <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
-            <div className="relative z-10 p-4">
-              <Shield className="h-12 w-12 mx-auto mb-2 opacity-90" />
-              <Stethoscope className="h-8 w-8 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold">Verify Your Account</h1>
-          <p className="opacity-90 mt-2">
-            {isNewUser 
-              ? "We've sent a verification code to your email" 
-              : "Confirm your identity to access your account"}
-          </p>
-        </div>
+        <VerificationHeader isNewUser={isNewUser} email={email} />
         
         <div className="p-8">
           <div className="text-center mb-6">
@@ -110,55 +93,19 @@ const PatientOtpVerification = () => {
             <p className="font-medium text-gray-800">{email}</p>
           </div>
           
-          <div className="mb-8">
-            <InputOTP 
-              maxLength={6}
-              value={value} 
-              onChange={(val) => setValue(val)}
-              containerClassName="justify-center gap-2"
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
+          <OtpInput value={value} onChange={setValue} />
           
-          <Button 
-            onClick={handleVerify} 
-            className="w-full mb-4 font-medium"
+          <VerifyButton 
+            isVerifying={isVerifying}
             disabled={isVerifying || value.length !== 6}
-          >
-            {isVerifying ? (
-              <>
-                <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
-                Verifying...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="mr-2 h-4 w-4" />
-                Verify & Continue
-              </>
-            )}
-          </Button>
+            onClick={handleVerify}
+          />
           
-          <div className="text-center">
-            <p className="text-gray-600 text-sm mb-2">Didn't receive the code?</p>
-            <Button 
-              variant="link" 
-              onClick={handleResendOTP}
-              disabled={resendDisabled}
-              className="text-primary font-medium p-0 h-auto"
-            >
-              {resendDisabled 
-                ? `Resend code in ${countdown}s` 
-                : "Resend verification code"}
-            </Button>
-          </div>
+          <ResendButton 
+            disabled={resendDisabled}
+            countdown={countdown}
+            onResend={handleResendOTP}
+          />
         </div>
       </div>
     </div>
