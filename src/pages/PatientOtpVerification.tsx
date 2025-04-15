@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Stethoscope, Shield, CheckCircle2, RefreshCcw, AlertCircle } from "lucide-react";
+import { Stethoscope, Shield, CheckCircle2, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { 
@@ -9,7 +9,6 @@ import {
   InputOTPGroup, 
   InputOTPSlot 
 } from "@/components/ui/input-otp";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const PatientOtpVerification = () => {
   const navigate = useNavigate();
@@ -19,11 +18,9 @@ const PatientOtpVerification = () => {
   const [resendDisabled, setResendDisabled] = useState(true);
   const [countdown, setCountdown] = useState(30);
   
-  // Extract data passed from login/register
   const email = location.state?.email || "user@example.com";
   const isNewUser = location.state?.isNewUser || false;
   
-  // Handle countdown for resend button
   useEffect(() => {
     if (countdown > 0 && resendDisabled) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -33,14 +30,9 @@ const PatientOtpVerification = () => {
     }
   }, [countdown, resendDisabled]);
 
-  // Simulate automatic code filling for demo purposes
-  useEffect(() => {
-    // Show toast with demo OTP instructions when component mounts
-    toast({
-      title: "Demo Mode",
-      description: "For demo purposes, use code 123456",
-    });
-  }, []);
+  const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
 
   const handleVerify = () => {
     if (value.length !== 6) {
@@ -54,16 +46,19 @@ const PatientOtpVerification = () => {
     
     setIsVerifying(true);
     
-    // Simulate OTP verification
+    // Get stored OTP
+    const storedOTP = sessionStorage.getItem('patientOTP');
+    
     setTimeout(() => {
-      // For demo purposes, we'll consider "123456" as valid OTP
-      if (value === "123456") {
+      if (value === storedOTP) {
         toast({
           title: "Verification Successful",
           description: isNewUser 
             ? "Your account has been created successfully" 
             : "Welcome back to CareSync",
         });
+        // Clear stored OTP
+        sessionStorage.removeItem('patientOTP');
         navigate("/dashboard");
       } else {
         toast({
@@ -81,15 +76,13 @@ const PatientOtpVerification = () => {
     setCountdown(30);
     setValue("");
     
-    // Simulate sending OTP
+    const newOTP = generateOTP();
+    sessionStorage.setItem('patientOTP', newOTP);
+    
     toast({
       title: "OTP Resent",
-      description: `For demo purposes, use 123456 as your verification code`,
+      description: `A new verification code has been sent to ${email}`,
     });
-  };
-  
-  const handleFillDemoCode = () => {
-    setValue("123456");
   };
   
   return (
@@ -106,19 +99,12 @@ const PatientOtpVerification = () => {
           <h1 className="text-2xl font-bold">Verify Your Account</h1>
           <p className="opacity-90 mt-2">
             {isNewUser 
-              ? "We've sent a verification code to your email or phone" 
+              ? "We've sent a verification code to your email" 
               : "Confirm your identity to access your account"}
           </p>
         </div>
         
         <div className="p-8">
-          <Alert className="mb-6 bg-yellow-50 border-yellow-100">
-            <AlertCircle className="h-4 w-4 text-yellow-500" />
-            <AlertDescription className="text-yellow-700">
-              <span className="font-medium">Demo Mode:</span> For testing purposes, use the code <span className="font-bold">123456</span>
-            </AlertDescription>
-          </Alert>
-          
           <div className="text-center mb-6">
             <p className="text-gray-600 mb-1">Enter the 6-digit code sent to</p>
             <p className="font-medium text-gray-800">{email}</p>
@@ -159,17 +145,6 @@ const PatientOtpVerification = () => {
               </>
             )}
           </Button>
-          
-          <div className="flex justify-center items-center space-x-4 mb-4">
-            <Button 
-              variant="outline" 
-              onClick={handleFillDemoCode}
-              className="text-primary font-medium"
-              size="sm"
-            >
-              Use Demo Code
-            </Button>
-          </div>
           
           <div className="text-center">
             <p className="text-gray-600 text-sm mb-2">Didn't receive the code?</p>

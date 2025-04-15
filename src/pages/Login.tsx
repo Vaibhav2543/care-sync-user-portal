@@ -14,17 +14,26 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate login API call
+    const otp = generateOTP();
+    
+    // Simulate sending OTP to email
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Authentication successful",
-        description: "Please verify your identity to continue",
+        title: "OTP Sent Successfully",
+        description: `A verification code has been sent to ${email}`,
       });
+      
+      // Store OTP in sessionStorage (in real app this would be handled server-side)
+      sessionStorage.setItem('patientOTP', otp);
       
       // Navigate to OTP verification page
       navigate("/verify", { 
