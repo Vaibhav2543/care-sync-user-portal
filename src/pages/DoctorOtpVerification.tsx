@@ -33,6 +33,15 @@ const DoctorOtpVerification = () => {
     }
   }, [countdown, resendDisabled]);
 
+  // Simulate automatic code filling for demo purposes
+  useEffect(() => {
+    // Show toast with demo OTP instructions when component mounts
+    toast({
+      title: "Demo Mode",
+      description: "For demo purposes, use code 123456",
+    });
+  }, []);
+
   const handleVerify = () => {
     if (value.length !== 6) {
       toast({
@@ -75,8 +84,12 @@ const DoctorOtpVerification = () => {
     // Simulate sending OTP
     toast({
       title: "OTP Resent",
-      description: `A new verification code has been sent to ${email}`,
+      description: `For demo purposes, use 123456 as your verification code`,
     });
+  };
+  
+  const handleFillDemoCode = () => {
+    setValue("123456");
   };
   
   return (
@@ -99,6 +112,13 @@ const DoctorOtpVerification = () => {
         </div>
         
         <div className="p-8">
+          <Alert className="mb-6 bg-yellow-50 border-yellow-100">
+            <AlertCircle className="h-4 w-4 text-yellow-500" />
+            <AlertDescription className="text-yellow-700">
+              <span className="font-medium">Demo Mode:</span> For testing purposes, use the code <span className="font-bold">123456</span>
+            </AlertDescription>
+          </Alert>
+          
           <div className="text-center mb-6">
             <p className="text-gray-600 mb-1">Enter the 6-digit code sent to</p>
             <p className="font-medium text-gray-800">{email}</p>
@@ -148,6 +168,17 @@ const DoctorOtpVerification = () => {
               </>
             )}
           </Button>
+          
+          <div className="flex justify-center items-center space-x-4 mb-4">
+            <Button 
+              variant="outline" 
+              onClick={handleFillDemoCode}
+              className="text-primary font-medium"
+              size="sm"
+            >
+              Use Demo Code
+            </Button>
+          </div>
           
           <div className="text-center">
             <p className="text-gray-600 text-sm mb-2">Didn't receive the code?</p>

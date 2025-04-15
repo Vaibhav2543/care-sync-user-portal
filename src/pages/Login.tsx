@@ -1,6 +1,8 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import AuthLayout from "@/components/AuthLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +41,14 @@ const Login = () => {
       title="Welcome back"
       subtitle="Sign in to your CareSync account"
     >
-      <form onSubmit={handleSubmit} className="mt-8 space-y-6 animate-fade-in-up">
+      <Alert className="mt-4 mb-2 bg-yellow-50 border-yellow-100">
+        <AlertCircle className="h-4 w-4 text-yellow-500" />
+        <AlertDescription className="text-yellow-700">
+          <span className="font-medium">Demo Mode:</span> You can use any email/password and will receive a demo OTP (123456)
+        </AlertDescription>
+      </Alert>
+      
+      <form onSubmit={handleSubmit} className="mt-4 space-y-6 animate-fade-in-up">
         <div className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
