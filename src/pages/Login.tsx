@@ -20,10 +20,17 @@ const Login = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: "Login successful",
-        description: "Welcome back to CareSync!",
+        title: "Authentication successful",
+        description: "Please verify your identity to continue",
       });
-      navigate("/auth-success");
+      
+      // Navigate to OTP verification page
+      navigate("/verify", { 
+        state: { 
+          email, 
+          isNewUser: false 
+        } 
+      });
     }, 1500);
   };
 

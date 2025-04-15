@@ -38,12 +38,17 @@ const DoctorLogin = () => {
       // Demo credentials check
       if (data.email === "doctor@example.com" && data.password === "password") {
         toast({
-          title: "Logged in successfully",
-          description: "Welcome back, Dr. Sarah Johnson",
+          title: "Authentication successful",
+          description: "Please complete verification to continue",
         });
         
-        // Pass userType in state to help with redirect
-        navigate("/auth-success", { state: { userType: "doctor" } });
+        // Navigate to OTP verification page
+        navigate("/doctor/verify", { 
+          state: { 
+            email: data.email, 
+            isNewUser: false 
+          } 
+        });
       } else {
         toast({
           title: "Login failed",
