@@ -19,6 +19,20 @@ const PatientOtpVerification = () => {
   const isNewUser = location.state?.isNewUser || false;
   
   useEffect(() => {
+    // Generate and set the initial OTP if it doesn't exist
+    if (!sessionStorage.getItem('patientOTP')) {
+      const newOTP = generateOTP();
+      sessionStorage.setItem('patientOTP', newOTP);
+      
+      // In a real application, this would send the OTP via email
+      toast({
+        title: "Verification Code Generated",
+        description: "For testing purposes, you can view the code with the 'View current code' button below",
+      });
+    }
+  }, []);
+  
+  useEffect(() => {
     if (countdown > 0 && resendDisabled) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
@@ -77,8 +91,8 @@ const PatientOtpVerification = () => {
     sessionStorage.setItem('patientOTP', newOTP);
     
     toast({
-      title: "OTP Resent",
-      description: `A new verification code has been sent to ${email}`,
+      title: "New Verification Code Generated",
+      description: `In a real app, a new code would be sent to ${email}. For testing, use the 'View current code' button.`,
     });
   };
   
