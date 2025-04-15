@@ -37,9 +37,16 @@ const Register = () => {
       setIsLoading(false);
       toast({
         title: "Registration successful",
-        description: "Your account has been created",
+        description: "Please verify your identity to continue",
       });
-      navigate("/auth-success");
+      
+      // Navigate to OTP verification page
+      navigate("/verify", { 
+        state: { 
+          email, 
+          isNewUser: true 
+        } 
+      });
     }, 1500);
   };
 
