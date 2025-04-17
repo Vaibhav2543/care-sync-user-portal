@@ -18,6 +18,7 @@ import DocumentView from "./pages/DocumentView";
 import Hospitals from "./pages/Hospitals";
 import HelpPage from "./pages/HelpPage";
 import PatientOtpVerification from "./pages/PatientOtpVerification";
+import ApprovalRequests from "./pages/ApprovalRequests";
 
 // Pages - Doctor
 import DoctorLogin from "./pages/DoctorLogin";
@@ -27,6 +28,7 @@ import PatientView from "./pages/PatientView";
 import DocumentReviews from "./pages/DocumentReviews";
 import DoctorHelpPage from "./pages/DoctorHelpPage";
 import DoctorOtpVerification from "./pages/DoctorOtpVerification";
+import RequestDocument from "./pages/RequestDocument";
 
 // Common Pages
 import NotFound from "./pages/NotFound";
@@ -55,6 +57,7 @@ const App = () => (
           <Route path="/document/:id" element={<DocumentView />} />
           <Route path="/hospitals" element={<Hospitals />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/approval-requests" element={<ApprovalRequests />} />
           
           {/* Doctor Routes */}
           <Route path="/doctor/login" element={<DoctorLogin />} />
@@ -64,6 +67,7 @@ const App = () => (
           <Route path="/doctor/patients/:id" element={<PatientView />} />
           <Route path="/doctor/reviews" element={<DocumentReviews />} />
           <Route path="/doctor/help" element={<DoctorHelpPage />} />
+          <Route path="/doctor/request-document" element={<RequestDocument />} />
           
           {/* Redirects */}
           <Route path="/index" element={<Navigate to="/" replace />} />

@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DoctorLayout from "@/components/DoctorLayout";
-import { Users, ClipboardList, Hospital, HelpCircle } from "lucide-react";
+import { Users, ClipboardList, Hospital, HelpCircle, FilePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -58,10 +58,15 @@ const DoctorDashboard = () => {
                   You have {doctor.patients} patients and {doctor.pendingReviews} pending document reviews.
                 </p>
               </div>
-              <div className="mt-4 md:mt-0">
+              <div className="mt-4 md:mt-0 flex gap-3">
                 <Button asChild>
                   <Link to="/doctor/patients">
                     <Users className="mr-2 h-4 w-4" /> View Patients
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to="/doctor/request-document">
+                    <FilePlus className="mr-2 h-4 w-4" /> Request Document
                   </Link>
                 </Button>
               </div>
@@ -70,7 +75,7 @@ const DoctorDashboard = () => {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <FeatureCard
           title="Patient Records"
           description="View and manage patient records"
@@ -84,6 +89,13 @@ const DoctorDashboard = () => {
           icon={<ClipboardList className="h-6 w-6 text-white" />}
           to="/doctor/reviews"
           color="bg-secondary"
+        />
+        <FeatureCard
+          title="Request Document"
+          description="Request documents from patients"
+          icon={<FilePlus className="h-6 w-6 text-white" />}
+          to="/doctor/request-document"
+          color="bg-indigo-500"
         />
         <FeatureCard
           title="Help Center"

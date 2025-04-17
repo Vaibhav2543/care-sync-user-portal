@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { Home, Upload, QrCode, History, Hospital, LogOut, HelpCircle } from "lucide-react";
+import { Home, Upload, QrCode, History, Hospital, LogOut, HelpCircle, FileCheck } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface NavItemProps {
@@ -71,6 +71,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             label="Upload Documents"
             icon={<Upload size={20} />}
             active={location.pathname === "/upload"}
+          />
+          <NavItem
+            to="/approval-requests"
+            label="Approval Requests"
+            icon={<FileCheck size={20} />}
+            active={location.pathname === "/approval-requests"}
           />
           <NavItem
             to="/qr-code"
