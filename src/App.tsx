@@ -29,6 +29,7 @@ import DocumentReviews from "./pages/DocumentReviews";
 import DoctorHelpPage from "./pages/DoctorHelpPage";
 import DoctorOtpVerification from "./pages/DoctorOtpVerification";
 import RequestDocument from "./pages/RequestDocument";
+import DoctorDocumentHistory from "./pages/DocumentHistory";
 
 // Common Pages
 import NotFound from "./pages/NotFound";
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/doctor/reviews" element={<DocumentReviews />} />
           <Route path="/doctor/help" element={<DoctorHelpPage />} />
           <Route path="/doctor/request-document" element={<RequestDocument />} />
+          <Route path="/doctor/document-history" element={<DoctorDocumentHistory />} />
           
           {/* Redirects */}
           <Route path="/index" element={<Navigate to="/" replace />} />

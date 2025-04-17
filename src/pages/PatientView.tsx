@@ -5,7 +5,8 @@ import DoctorLayout from "@/components/DoctorLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Phone, Mail, Calendar, FileText, User, Activity, ArrowLeft } from "lucide-react";
+import { Phone, Mail, Calendar, FileText, User, Activity, ArrowLeft, Clock, Eye, History } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 // Mock patient data
 const patientData = {
@@ -24,7 +25,57 @@ const patientData = {
     { id: "2", name: "Recent Prescription.pdf", date: "1 week ago", type: "Prescription" },
     { id: "3", name: "ECG Report.pdf", date: "2 weeks ago", type: "Diagnostic" },
     { id: "4", name: "Vaccination Record.pdf", date: "1 month ago", type: "Immunization" }
+  ],
+  approvedDocuments: [
+    { 
+      id: "101", 
+      name: "Blood Test Report.pdf", 
+      date: "2023-04-15T10:30:00", 
+      type: "Lab Report",
+      approvedAt: "2023-04-15T10:30:00",
+      expiresAt: "2023-04-15T11:00:00",
+      isExpired: false
+    },
+    { 
+      id: "102", 
+      name: "X-Ray Results.pdf", 
+      date: "2023-04-10T14:45:00", 
+      type: "Imaging",
+      approvedAt: "2023-04-10T14:45:00",
+      expiresAt: "2023-04-10T15:15:00",
+      isExpired: false
+    },
+    { 
+      id: "103", 
+      name: "Allergy Test.pdf", 
+      date: "2023-03-22T09:15:00", 
+      type: "Lab Report",
+      approvedAt: "2023-03-22T09:15:00",
+      expiresAt: "2023-03-22T09:45:00",
+      isExpired: true
+    }
   ]
+};
+
+// Helper function to check if a document's viewing period is still active
+const isDocumentViewable = (expiresAt: string): boolean => {
+  const now = new Date();
+  const expiry = new Date(expiresAt);
+  return now < expiry;
+};
+
+// Helper to format the remaining time
+const formatRemainingTime = (expiresAt: string): string => {
+  const now = new Date();
+  const expiry = new Date(expiresAt);
+  const diffMs = expiry.getTime() - now.getTime();
+  
+  if (diffMs <= 0) return "Expired";
+  
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffSecs = Math.floor((diffMs % 60000) / 1000);
+  
+  return `${diffMins}m ${diffSecs}s remaining`;
 };
 
 const PatientView = () => {
@@ -32,6 +83,32 @@ const PatientView = () => {
   // In a real app, we would fetch the patient data based on the ID
   // For demo purposes, we're using the mock data
   const patient = patientData;
+  
+  // For demonstration, we'll update the time remaining every second
+  const [, setRefreshCounter] = React.useState(0);
+  
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setRefreshCounter(count => count + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleViewDocument = (doc: any) => {
+    if (isDocumentViewable(doc.expiresAt)) {
+      // In a real app, this would navigate to a document view page or open a modal
+      toast({
+        title: "Document Accessed",
+        description: `You are viewing ${doc.name}. This access expires in 30 minutes.`
+      });
+    } else {
+      toast({
+        title: "Access Expired",
+        description: "This document's viewing period has expired.",
+        variant: "destructive"
+      });
+    }
+  };
 
   return (
     <DoctorLayout title={`Patient: ${patient.name}`}>
@@ -104,18 +181,72 @@ const PatientView = () => {
         </Card>
 
         <Card className="lg:col-span-2">
-          <Tabs defaultValue="documents">
+          <Tabs defaultValue="approved">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Patient Records</CardTitle>
                 <TabsList>
-                  <TabsTrigger value="documents">Documents</TabsTrigger>
+                  <TabsTrigger value="approved">Approved Documents</TabsTrigger>
+                  <TabsTrigger value="documents">All Documents</TabsTrigger>
                   <TabsTrigger value="conditions">Conditions</TabsTrigger>
                   <TabsTrigger value="allergies">Allergies</TabsTrigger>
                 </TabsList>
               </div>
             </CardHeader>
             <CardContent>
+              <TabsContent value="approved" className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-medium">Approved Documents</h3>
+                  <Link to="/doctor/document-history">
+                    <Button variant="outline" size="sm">
+                      <History className="mr-2 h-4 w-4" /> View History
+                    </Button>
+                  </Link>
+                </div>
+                
+                <div className="divide-y">
+                  {patient.approvedDocuments.map((doc) => {
+                    const isViewable = isDocumentViewable(doc.expiresAt);
+                    return (
+                      <div key={doc.id} className="py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-lg ${isViewable ? 'bg-green-100' : 'bg-gray-100'} flex items-center justify-center`}>
+                            <FileText className={`h-5 w-5 ${isViewable ? 'text-green-600' : 'text-gray-500'}`} />
+                          </div>
+                          <div>
+                            <p className="font-medium">{doc.name}</p>
+                            <p className="text-sm text-gray-500">{doc.type}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {isViewable ? (
+                            <>
+                              <div className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full flex items-center">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {formatRemainingTime(doc.expiresAt)}
+                              </div>
+                              <Button size="sm" variant="default" onClick={() => handleViewDocument(doc)}>
+                                <Eye className="h-4 w-4 mr-1" /> View
+                              </Button>
+                            </>
+                          ) : (
+                            <div className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                              Expired
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  
+                  {patient.approvedDocuments.length === 0 && (
+                    <div className="py-8 text-center">
+                      <p className="text-gray-500">No approved documents available</p>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+              
               <TabsContent value="documents" className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="font-medium">Medical Documents</h3>

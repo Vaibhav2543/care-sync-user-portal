@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import { Users, ClipboardList, Hospital, HelpCircle, LogOut } from "lucide-react";
+import { Users, ClipboardList, Hospital, HelpCircle, LogOut, History } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface NavItemProps {
@@ -77,6 +77,12 @@ const DoctorLayout: React.FC<DoctorLayoutProps> = ({ children, title }) => {
             label="Document Reviews"
             icon={<ClipboardList size={20} />}
             active={location.pathname === "/doctor/reviews" || location.pathname.startsWith("/doctor/reviews/")}
+          />
+          <NavItem
+            to="/doctor/document-history"
+            label="Document History"
+            icon={<History size={20} />}
+            active={location.pathname === "/doctor/document-history"}
           />
           <NavItem
             to="/doctor/help"

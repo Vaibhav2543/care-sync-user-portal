@@ -1,59 +1,91 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import DashboardLayout from "@/components/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import DoctorLayout from "@/components/DoctorLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { File, Search, Calendar, Eye } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { FileText, Search, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Dummy data for document history
-const documents = [
+// Mock document history data
+const documentHistory = [
   {
-    id: "1",
-    name: "Blood Test Results",
-    description: "Annual blood work from Dr. Smith",
-    date: "2023-04-01",
-    tags: ["lab-results", "annual-checkup"],
-    type: "PDF",
+    id: "101",
+    patientName: "John Doe",
+    patientId: "1",
+    documentName: "Blood Test Report.pdf",
+    requestDate: "2023-04-14",
+    responseDate: "2023-04-15",
+    status: "approved",
+    viewedOn: "2023-04-15",
+    expiryDate: "2023-04-15"
   },
   {
-    id: "2",
-    name: "COVID-19 Vaccination Card",
-    description: "Vaccination record with booster shots",
-    date: "2023-02-15",
-    tags: ["vaccination", "covid"],
-    type: "PDF",
+    id: "102",
+    patientName: "John Doe",
+    patientId: "1",
+    documentName: "X-Ray Results.pdf",
+    requestDate: "2023-04-09",
+    responseDate: "2023-04-10",
+    status: "approved",
+    viewedOn: "2023-04-10",
+    expiryDate: "2023-04-10"
   },
   {
-    id: "3",
-    name: "Chest X-Ray",
-    description: "Chest X-ray from City Hospital",
-    date: "2022-11-22",
-    tags: ["x-ray", "radiology"],
-    type: "PDF",
+    id: "103",
+    patientName: "John Doe",
+    patientId: "1",
+    documentName: "Allergy Test.pdf",
+    requestDate: "2023-03-21",
+    responseDate: "2023-03-22",
+    status: "approved",
+    viewedOn: "2023-03-22",
+    expiryDate: "2023-03-22"
   },
   {
-    id: "4",
-    name: "Insurance Card",
-    description: "Health insurance documentation",
-    date: "2022-09-10",
-    tags: ["insurance", "administrative"],
-    type: "PDF",
+    id: "104",
+    patientName: "Jane Smith",
+    patientId: "2",
+    documentName: "Medical History.pdf",
+    requestDate: "2023-04-18",
+    responseDate: "2023-04-19",
+    status: "rejected",
+    viewedOn: "",
+    expiryDate: ""
   },
+  {
+    id: "105",
+    patientName: "Emily Clark",
+    patientId: "4",
+    documentName: "Prescription Records.pdf",
+    requestDate: "2023-04-01",
+    responseDate: "2023-04-02",
+    status: "approved",
+    viewedOn: "2023-04-02",
+    expiryDate: "2023-04-02"
+  }
 ];
 
 const DocumentHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   
-  // Filter documents based on search query
-  const filteredDocuments = documents.filter(doc => 
-    doc.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    doc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    doc.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  // Filter documents based on search query and status filter
+  const filteredDocuments = documentHistory.filter(doc => {
+    const matchesSearch = 
+      doc.documentName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      doc.patientName.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesStatus = 
+      statusFilter === "all" || 
+      doc.status === statusFilter;
+    
+    return matchesSearch && matchesStatus;
+  });
 
   const formatDate = (dateStr: string) => {
+    if (!dateStr) return "—";
+    
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat('en-US', { 
       year: 'numeric', 
@@ -63,85 +95,116 @@ const DocumentHistory = () => {
   };
 
   return (
-    <DashboardLayout title="Document History">
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
-          <Input
-            placeholder="Search documents by name, description or tag..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
+    <DoctorLayout title="Document History">
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
+              <Input
+                placeholder="Search by document name or patient..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="w-full md:w-48">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="approved">Approved</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Documents</CardTitle>
+          <CardTitle>Document Access History</CardTitle>
         </CardHeader>
-        <CardContent>
-          {filteredDocuments.length > 0 ? (
-            <div className="space-y-4">
-              {filteredDocuments.map((doc) => (
-                <div 
-                  key={doc.id}
-                  className="p-4 border rounded-lg flex flex-col sm:flex-row sm:items-center gap-4 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <File className="h-6 w-6 text-primary" />
-                  </div>
-                  
-                  <div className="flex-grow">
-                    <h3 className="font-medium text-lg">{doc.name}</h3>
-                    <p className="text-gray-600 text-sm mb-2">{doc.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {doc.tags.map((tag) => (
-                        <span 
-                          key={tag} 
-                          className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-700"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+        <CardContent className="p-0 overflow-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Document</TableHead>
+                <TableHead>Patient</TableHead>
+                <TableHead>Request Date</TableHead>
+                <TableHead>Response Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Viewed On</TableHead>
+                <TableHead>Expiry Date</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredDocuments.length > 0 ? (
+                filteredDocuments.map((doc) => (
+                  <TableRow key={doc.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-gray-500" />
+                        <span className="font-medium">{doc.documentName}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{doc.patientName}</TableCell>
+                    <TableCell>{formatDate(doc.requestDate)}</TableCell>
+                    <TableCell>{formatDate(doc.responseDate)}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        {doc.status === "approved" ? (
+                          <>
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span className="text-green-600">Approved</span>
+                          </>
+                        ) : (
+                          <>
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <span className="text-red-600">Rejected</span>
+                          </>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {doc.viewedOn ? (
+                        formatDate(doc.viewedOn)
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {doc.expiryDate ? (
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4 text-gray-500" />
+                          {formatDate(doc.expiryDate)}
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-8">
+                    <div className="flex flex-col items-center justify-center">
+                      <Search className="h-8 w-8 text-gray-300 mb-2" />
+                      <p className="text-gray-500">No documents found</p>
                     </div>
-                  </div>
-                  
-                  <div className="flex flex-col sm:items-end gap-2 mt-2 sm:mt-0">
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      {formatDate(doc.date)}
-                    </div>
-                    <Button asChild variant="outline" size="sm">
-                      <Link to={`/document/${doc.id}`}>
-                        <Eye className="h-4 w-4 mr-2" /> View
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                <Search className="h-8 w-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium mb-1">No documents found</h3>
-              <p className="text-gray-500">
-                {searchQuery 
-                  ? `No documents match "${searchQuery}". Try a different search term.` 
-                  : "You haven't uploaded any documents yet."}
-              </p>
-              {!searchQuery && (
-                <Button asChild className="mt-4">
-                  <Link to="/upload">Upload your first document</Link>
-                </Button>
+                  </TableCell>
+                </TableRow>
               )}
-            </div>
-          )}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
-    </DashboardLayout>
+    </DoctorLayout>
   );
 };
 
