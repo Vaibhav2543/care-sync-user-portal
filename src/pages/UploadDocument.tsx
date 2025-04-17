@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Upload, X, File, Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const UploadDocument = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -15,6 +21,7 @@ const UploadDocument = () => {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [documentType, setDocumentType] = useState("General");
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
@@ -104,6 +111,7 @@ const UploadDocument = () => {
       setDocumentName("");
       setDescription("");
       setTags("");
+      setDocumentType("General");
     }, 2000);
   };
 
@@ -193,6 +201,27 @@ const UploadDocument = () => {
                     placeholder="e.g., Blood Test Results"
                     required
                   />
+                </div>
+                
+                <div>
+                  <label htmlFor="document-type" className="block text-sm font-medium text-gray-700 mb-1">
+                    Document Type
+                  </label>
+                  <Select
+                    value={documentType}
+                    onValueChange={setDocumentType}
+                  >
+                    <SelectTrigger id="document-type" className="w-full">
+                      <SelectValue placeholder="Select document type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Prescription">Prescription</SelectItem>
+                      <SelectItem value="Diagnosis">Diagnosis</SelectItem>
+                      <SelectItem value="LabReport">Lab Report</SelectItem>
+                      <SelectItem value="Imaging">Imaging</SelectItem>
+                      <SelectItem value="General">General</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div>
