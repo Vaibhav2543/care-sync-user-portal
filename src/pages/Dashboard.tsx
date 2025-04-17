@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Upload, QrCode, History, Hospital } from "lucide-react";
+import { Upload, QrCode, History, Hospital, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -12,6 +12,7 @@ const user = {
   documents: 4,
   recentDocument: "Blood Test Results.pdf",
   lastUpload: "2 days ago",
+  pendingRequests: 2,
 };
 
 interface FeatureCardProps {
@@ -98,6 +99,35 @@ const Dashboard = () => {
           to="/hospitals"
           color="bg-emerald-500"
         />
+      </div>
+
+      {/* New section for pending approval requests */}
+      <div className="mt-8 mb-8">
+        <h3 className="text-xl font-bold mb-4">Pending Approval Requests</h3>
+        <Card className="bg-amber-50 border-amber-200">
+          <CardContent className="p-6">
+            <div className="flex flex-col md:flex-row items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-amber-200 flex items-center justify-center">
+                  <FileCheck className="h-5 w-5 text-amber-600" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-amber-800">You have {user.pendingRequests} pending document requests</h4>
+                  <p className="text-sm text-amber-700">Doctors are waiting for your approval</p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                className="mt-4 md:mt-0 border-amber-300 text-amber-800 hover:bg-amber-100 hover:text-amber-900"
+                asChild
+              >
+                <Link to="/approval-requests">
+                  Review Requests
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="mt-8">
