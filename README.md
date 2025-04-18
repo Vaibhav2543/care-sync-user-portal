@@ -1,18 +1,8 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/89590b3f-c043-4bdf-a3ef-b601270caad8
-
+Welcome To CareSync User Portal
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/89590b3f-c043-4bdf-a3ef-b601270caad8) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
