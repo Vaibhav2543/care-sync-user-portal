@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
@@ -38,7 +37,6 @@ const DoctorLayout: React.FC<DoctorLayoutProps> = ({ children, title }) => {
   const navigate = useNavigate();
   
   const handleLogout = () => {
-    // Simple logout for now, would implement proper auth later
     toast({
       title: "Logged out successfully",
       description: "You have been logged out of your account",
@@ -71,12 +69,6 @@ const DoctorLayout: React.FC<DoctorLayoutProps> = ({ children, title }) => {
             label="Patient Records"
             icon={<Users size={20} />}
             active={location.pathname === "/doctor/patients" || location.pathname.startsWith("/doctor/patients/")}
-          />
-          <NavItem
-            to="/doctor/reviews"
-            label="Document Reviews"
-            icon={<ClipboardList size={20} />}
-            active={location.pathname === "/doctor/reviews" || location.pathname.startsWith("/doctor/reviews/")}
           />
           <NavItem
             to="/doctor/document-history"

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import DoctorLayout from "@/components/DoctorLayout";
@@ -82,13 +81,6 @@ const DoctorDashboard = () => {
           icon={<Users className="h-6 w-6 text-white" />}
           to="/doctor/patients"
           color="bg-primary"
-        />
-        <FeatureCard
-          title="Document Reviews"
-          description="Review pending documents"
-          icon={<ClipboardList className="h-6 w-6 text-white" />}
-          to="/doctor/reviews"
-          color="bg-secondary"
         />
         <FeatureCard
           title="Request Document"
