@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,7 +25,7 @@ import DoctorLogin from "./pages/DoctorLogin";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import PatientList from "./pages/PatientList";
 import PatientView from "./pages/PatientView";
-import DocumentReviews from "./pages/DocumentReviews";
+// Removed import: import DocumentReviews from "./pages/DocumentReviews";
 import DoctorHelpPage from "./pages/DoctorHelpPage";
 import DoctorOtpVerification from "./pages/DoctorOtpVerification";
 import RequestDocument from "./pages/RequestDocument";

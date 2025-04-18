@@ -1,7 +1,8 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import DoctorLayout from "@/components/DoctorLayout";
-import { Users, ClipboardList, Hospital, HelpCircle, FilePlus } from "lucide-react";
+import { Users, FilePlus, HelpCircle, History, Hospital } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -81,6 +82,13 @@ const DoctorDashboard = () => {
           icon={<Users className="h-6 w-6 text-white" />}
           to="/doctor/patients"
           color="bg-primary"
+        />
+        <FeatureCard
+          title="Document History"
+          description="View document access and requests"
+          icon={<History className="h-6 w-6 text-white" />}
+          to="/doctor/document-history"
+          color="bg-secondary"
         />
         <FeatureCard
           title="Request Document"
