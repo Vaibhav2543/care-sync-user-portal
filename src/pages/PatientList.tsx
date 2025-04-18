@@ -1,4 +1,3 @@
-
 import React from "react";
 import DoctorLayout from "@/components/DoctorLayout";
 import { Button } from "@/components/ui/button";
@@ -105,13 +104,6 @@ const PatientList = () => {
                           <Eye size={16} className="mr-1" /> View
                         </Link>
                       </Button>
-                      {patient.activeApprovedDocs > 0 && (
-                        <Button size="sm" variant="secondary" asChild>
-                          <Link to={`/doctor/patients/${patient.id}`}>
-                            <FileText size={16} className="mr-1" /> View Documents
-                          </Link>
-                        </Button>
-                      )}
                     </div>
                   </TableCell>
                 </TableRow>
