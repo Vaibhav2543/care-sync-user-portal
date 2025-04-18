@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
-import { Lock, Mail, Info } from "lucide-react";
+import { Lock, Mail, Info, Eye, EyeOff } from "lucide-react";
 import { 
   Card, 
   CardContent, 
@@ -25,6 +25,7 @@ interface FormData {
 const DoctorLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showAccountInfo, setShowAccountInfo] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
@@ -99,9 +100,9 @@ const DoctorLogin = () => {
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
             <Input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
-              className="pl-10"
+              className="pl-10 pr-10"
               {...register("password", { 
                 required: "Password is required",
                 minLength: {
@@ -110,6 +111,15 @@ const DoctorLogin = () => {
                 }
               })}
             />
+            <button
+              type="button"
+              tabIndex={-1}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
           </div>
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password.message}</p>
@@ -172,3 +182,4 @@ const DoctorLogin = () => {
 };
 
 export default DoctorLogin;
+
