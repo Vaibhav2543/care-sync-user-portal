@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,13 +18,13 @@ import Hospitals from "./pages/Hospitals";
 import HelpPage from "./pages/HelpPage";
 import PatientOtpVerification from "./pages/PatientOtpVerification";
 import ApprovalRequests from "./pages/ApprovalRequests";
+import PatientDocumentHistory from "./pages/PatientDocumentHistory";
 
 // Pages - Doctor
 import DoctorLogin from "./pages/DoctorLogin";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import PatientList from "./pages/PatientList";
 import PatientView from "./pages/PatientView";
-// Removed import: import DocumentReviews from "./pages/DocumentReviews";
 import DoctorHelpPage from "./pages/DoctorHelpPage";
 import DoctorOtpVerification from "./pages/DoctorOtpVerification";
 import RequestDocument from "./pages/RequestDocument";
@@ -54,7 +53,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<UploadDocument />} />
           <Route path="/qr-code" element={<QrCode />} />
-          <Route path="/history" element={<DocumentHistory />} />
+          <Route path="/history" element={<PatientDocumentHistory />} />
           <Route path="/document/:id" element={<DocumentView />} />
           <Route path="/hospitals" element={<Hospitals />} />
           <Route path="/help" element={<HelpPage />} />
