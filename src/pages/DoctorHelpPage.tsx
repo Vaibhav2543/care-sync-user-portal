@@ -1,4 +1,3 @@
-
 import React from "react";
 import DoctorLayout from "@/components/DoctorLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,9 +29,6 @@ const DoctorHelpPage = () => {
               </Button>
               <Button variant="outline">
                 <Phone className="mr-2 h-4 w-4" /> Priority Line: (555) 987-6543
-              </Button>
-              <Button variant="secondary">
-                <MessageSquare className="mr-2 h-4 w-4" /> Live Assistance
               </Button>
             </div>
           </CardContent>

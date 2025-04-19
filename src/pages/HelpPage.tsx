@@ -1,4 +1,3 @@
-
 import React from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,9 +29,6 @@ const HelpPage = () => {
               </Button>
               <Button variant="outline">
                 <Phone className="mr-2 h-4 w-4" /> Call: (555) 123-4567
-              </Button>
-              <Button variant="secondary">
-                <MessageSquare className="mr-2 h-4 w-4" /> Live Chat
               </Button>
             </div>
           </CardContent>
