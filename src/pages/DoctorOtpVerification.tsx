@@ -19,11 +19,9 @@ const DoctorOtpVerification = () => {
   const [resendDisabled, setResendDisabled] = useState(true);
   const [countdown, setCountdown] = useState(30);
   
-  // Extract data passed from login/register
   const email = location.state?.email || "doctor@example.com";
   const isNewUser = location.state?.isNewUser || false;
   
-  // Handle countdown for resend button
   useEffect(() => {
     if (countdown > 0 && resendDisabled) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
@@ -33,9 +31,7 @@ const DoctorOtpVerification = () => {
     }
   }, [countdown, resendDisabled]);
 
-  // Simulate automatic code filling for demo purposes
   useEffect(() => {
-    // Show toast with demo OTP instructions when component mounts
     toast({
       title: "Demo Mode",
       description: "For demo purposes, use code 123456",
@@ -51,12 +47,8 @@ const DoctorOtpVerification = () => {
       });
       return;
     }
-    
     setIsVerifying(true);
-    
-    // Simulate OTP verification
     setTimeout(() => {
-      // For demo purposes, we'll consider "123456" as valid OTP
       if (value === "123456") {
         toast({
           title: "Verification Successful",
@@ -80,8 +72,6 @@ const DoctorOtpVerification = () => {
     setResendDisabled(true);
     setCountdown(30);
     setValue("");
-    
-    // Simulate sending OTP
     toast({
       title: "OTP Resent",
       description: `For demo purposes, use 123456 as your verification code`,
@@ -90,6 +80,12 @@ const DoctorOtpVerification = () => {
   
   const handleFillDemoCode = () => {
     setValue("123456");
+  };
+
+  // Add form submit to allow Enter key submission
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleVerify();
   };
   
   return (
@@ -132,43 +128,42 @@ const DoctorOtpVerification = () => {
               </AlertDescription>
             </Alert>
           )}
-          
-          <div className="mb-8">
-            <InputOTP 
-              maxLength={6}
-              value={value} 
-              onChange={(val) => setValue(val)}
-              containerClassName="justify-center gap-2"
+          <form onSubmit={handleFormSubmit}>
+            <div className="mb-8">
+              <InputOTP 
+                maxLength={6}
+                value={value} 
+                onChange={(val) => setValue(val)}
+                containerClassName="justify-center gap-2"
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <Button 
+              type="submit"
+              className="w-full mb-4 font-medium"
+              disabled={isVerifying || value.length !== 6}
             >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </div>
-          
-          <Button 
-            onClick={handleVerify} 
-            className="w-full mb-4 font-medium"
-            disabled={isVerifying || value.length !== 6}
-          >
-            {isVerifying ? (
-              <>
-                <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
-                Verifying...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="mr-2 h-4 w-4" />
-                Verify & Continue
-              </>
-            )}
-          </Button>
-          
+              {isVerifying ? (
+                <>
+                  <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
+                  Verifying...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                  Verify & Continue
+                </>
+              )}
+            </Button>
+          </form>
           <div className="flex justify-center items-center space-x-4 mb-4">
             <Button 
               variant="outline" 
@@ -179,7 +174,6 @@ const DoctorOtpVerification = () => {
               Use Demo Code
             </Button>
           </div>
-          
           <div className="text-center">
             <p className="text-gray-600 text-sm mb-2">Didn't receive the code?</p>
             <Button 

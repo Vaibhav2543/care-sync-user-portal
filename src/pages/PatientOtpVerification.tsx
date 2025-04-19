@@ -19,12 +19,9 @@ const PatientOtpVerification = () => {
   const isNewUser = location.state?.isNewUser || false;
   
   useEffect(() => {
-    // Generate and set the initial OTP if it doesn't exist
     if (!sessionStorage.getItem('patientOTP')) {
       const newOTP = generateOTP();
       sessionStorage.setItem('patientOTP', newOTP);
-      
-      // In a real application, this would send the OTP via email
       toast({
         title: "Verification Code Generated",
         description: "For testing purposes, you can view the code with the 'View current code' button below",
@@ -54,12 +51,8 @@ const PatientOtpVerification = () => {
       });
       return;
     }
-    
     setIsVerifying(true);
-    
-    // Get stored OTP
     const storedOTP = sessionStorage.getItem('patientOTP');
-    
     setTimeout(() => {
       if (value === storedOTP) {
         toast({
@@ -68,7 +61,6 @@ const PatientOtpVerification = () => {
             ? "Your account has been created successfully" 
             : "Welcome back to CareSync",
         });
-        // Clear stored OTP
         sessionStorage.removeItem('patientOTP');
         navigate("/dashboard");
       } else {
@@ -86,35 +78,38 @@ const PatientOtpVerification = () => {
     setResendDisabled(true);
     setCountdown(30);
     setValue("");
-    
     const newOTP = generateOTP();
     sessionStorage.setItem('patientOTP', newOTP);
-    
     toast({
       title: "New Verification Code Generated",
       description: `In a real app, a new code would be sent to ${email}. For testing, use the 'View current code' button.`,
     });
+  };
+
+  // Handle form submit (Enter key)
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleVerify();
   };
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         <VerificationHeader isNewUser={isNewUser} email={email} />
-        
         <div className="p-8">
           <div className="text-center mb-6">
             <p className="text-gray-600 mb-1">Enter the 6-digit code sent to</p>
             <p className="font-medium text-gray-800">{email}</p>
           </div>
-          
-          <OtpInput value={value} onChange={setValue} />
-          
-          <VerifyButton 
-            isVerifying={isVerifying}
-            disabled={isVerifying || value.length !== 6}
-            onClick={handleVerify}
-          />
-          
+          <form onSubmit={handleFormSubmit}>
+            <OtpInput value={value} onChange={setValue} />
+            <VerifyButton 
+              isVerifying={isVerifying}
+              disabled={isVerifying || value.length !== 6}
+              // The button type is now submit, so Enter works
+              onClick={handleVerify}
+            />
+          </form>
           <ResendButton 
             disabled={resendDisabled}
             countdown={countdown}
