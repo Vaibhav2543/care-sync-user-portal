@@ -28,7 +28,7 @@ const HelpPage = () => {
                 </a>
               </Button>
               <Button variant="outline">
-                <Phone className="mr-2 h-4 w-4" /> Call: (555) 123-4567
+                <Phone className="mr-2 h-4 w-4" /> Call: +91 98765 43210
               </Button>
             </div>
           </CardContent>

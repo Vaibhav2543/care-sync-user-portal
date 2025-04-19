@@ -28,7 +28,7 @@ const DoctorHelpPage = () => {
                 </a>
               </Button>
               <Button variant="outline">
-                <Phone className="mr-2 h-4 w-4" /> Priority Line: (555) 987-6543
+                <Phone className="mr-2 h-4 w-4" /> Priority Line: +91 98111 22334
               </Button>
             </div>
           </CardContent>
