@@ -6,50 +6,77 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { QrCode as QrCodeIcon, Download, Copy } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-// Dummy QR code - this would be dynamically generated in a real app
-const dummyQrCode = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAYAAABRRIOnAAAAAklEQVR4AewaftIAAAOPSURBVO3BQY4cSRLAQDLQ//8yV0c/JZCqaqbxYGb/sNZlh7UuO6x12WGtyw5rXXZY67LDWpcd1rrssNZlh7UuO6x12WGtyw5rXXZY67LDWpc9PIjkb1JMJFOKJwqmFE8kv0kxkXzTYa3LDmtddljrsocPU7xJ8gmKiWQimUimFBPJlGIieUPxCYo3Sd50WOuyw1qXHda67OGXSd5Q/CbFRPKGYiKZUkwk31C8QfKbDmtddljrssNalz38YYqJZEoxkUwUE8Wblf9Zh7UuO6x12WGtyx7+MIonFN+g+A3J/7PDWpcd1rrssNZlD79M8psUE8kTionkTxbJlOKbDmtddljrssNalz18mOJ/STGRPKGYSCaKieQJxROKieRvOqx12WGtyw5rXfbwIMlEMqWYSKYUTyieUEwkU4qJ5BsUE8kbFG8oJpIpxZsOa112WOuyw1qXPTxQTCRTionkDYqJZErxCYqJ5A3FRDKlmEg+QfETionkTYe1LjusdclhrUvh/5jiG4qJZEoxkUwpJpKJYiKZKCaSKcVEMqV402Gtyw5rXXZY67KHB8lEMqWYSL5B8QnFG4qJZCKZUnyD4gnFRDKleFLxNx3WuuzW9u9GlDyhePqA4pvWZUgHjp5QPMHRYa3LDmtddljrsocHkk9QTCRTiicUE8kTiolkSjGRTCkmkolkSvGE4psUTyh+02Gtyw5rXXZY67KHB8UTionkGxRPKCaSieQNxUQypZhSPKF4k2IieULxicNalx3Wuuyw1mUPD5JMKSaSKcVE8obik0imFBPJlOI3KSaSKcVvOqx12WGtyw5rXfbwIZJPUDyhmEimFE8oJpIpxScUE8kbFJ9QTCRTionkDYe1LjusdclhrcseHkTyNykmkonkCcWUYiKZUryhmEimFE8k36CYSKYUbzqsddlhrcsOa1328GGKN0k+QfEJiolkSjGRTCkmkt+keJPiEw5rXXZY67LDWpc9/DLJGxRvUEwkE8mU4gnFRDKleIPiDYpPOKx12WGtyw5rXfbwl1N8QvGEYiKZKCaSE8UTioliIplSTCRvOqx12WGtyw5rXfbwl1NMJFOKiWRKMZFMKSaSKcV/STKleNNhrcsOa112WOuyhx/9h+QbiolkSjGRTCmmFFOKiWQimVI8oXjTYa3LDmtddljrsodfJvmbFBPJJyieUHxCMaWYSCaSb1C86bDWZYe1LjusdZn9w1qXHda67LDWZYe1LjusdclhrcuGtS77B7svF8XJ2S+nAAAAAElFTkSuQmCC";
+// Utility function to create a random string for QR value
+function getRandomString(length = 12) {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let str = "";
+  for (let i = 0; i < length; i++)
+    str += chars[Math.floor(Math.random() * chars.length)];
+  return str;
+}
 
 const QrCodePage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const [qrValue, setQrValue] = useState<string | null>(null);
 
   const handleGenerateQR = () => {
     setIsGenerating(true);
-    
-    // Simulate API call to generate QR code
+
+    // Create a new random value/string for the QR
+    const newQrValue = getRandomString(16);
+
+    // Use a free QR code API for demo: https://goqr.me/api/
+    // Since it's a demo, you can use the value in the QR. In a real app, you'd use secure APIs.
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(
+      newQrValue
+    )}`;
+
+    // Simulate async QR code generation
     setTimeout(() => {
       setIsGenerating(false);
-      setQrCode(dummyQrCode);
-      
+      setQrCode(qrUrl);
+      setQrValue(newQrValue);
+
       toast({
         title: "QR code generated",
         description: "Your emergency QR code is ready to use",
       });
-    }, 1500);
+    }, 1200);
   };
 
   const handleDownload = () => {
-    // In a real app, this would download the actual QR code image
+    if (!qrCode) return;
+
+    // Download the QR image shown
     const link = document.createElement("a");
-    link.href = dummyQrCode;
+    link.href = qrCode;
     link.download = "caresync-emergency-qr.png";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     toast({
       title: "QR code downloaded",
       description: "Your emergency QR code has been saved",
     });
   };
 
-  const handleCopy = () => {
-    // In a real app, this would copy the actual QR code to clipboard
-    // For now, just show a toast
-    toast({
-      title: "QR code copied",
-      description: "Your emergency QR code has been copied to clipboard",
-    });
+  const handleCopy = async () => {
+    // For demo: copy the QR data string, not the image
+    if (qrValue) {
+      await navigator.clipboard.writeText(qrValue);
+      toast({
+        title: "QR code copied",
+        description: "The QR data has been copied to clipboard",
+      });
+    } else {
+      toast({
+        title: "Unable to copy",
+        description: "Please generate a QR code first.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -80,7 +107,7 @@ const QrCodePage = () => {
                   </div>
                 )}
               </div>
-              
+
               {qrCode ? (
                 <div className="flex justify-center space-x-4">
                   <Button onClick={handleDownload}>
@@ -113,7 +140,7 @@ const QrCodePage = () => {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="caresync-3d-card">
             <CardHeader>
               <CardTitle className="text-lg">Privacy Controlled</CardTitle>
@@ -124,7 +151,7 @@ const QrCodePage = () => {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card className="caresync-3d-card">
             <CardHeader>
               <CardTitle className="text-lg">Always Available</CardTitle>
@@ -142,3 +169,4 @@ const QrCodePage = () => {
 };
 
 export default QrCodePage;
+
