@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +7,8 @@ import { FileText, Search, Clock, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
-// Example patient document history data
 const patientDocuments = [
   {
     id: "1",
@@ -37,6 +36,7 @@ const patientDocuments = [
 const PatientDocumentHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const navigate = useNavigate();
 
   const filteredDocuments = patientDocuments.filter(doc => {
     const matchesSearch =
@@ -57,10 +57,7 @@ const PatientDocumentHistory = () => {
   };
 
   const handleViewDocument = (doc: typeof patientDocuments[0]) => {
-    toast({
-      title: "Viewing Document",
-      description: `You're viewing "${doc.documentName}". (Demo only, actual PDF not available.)`,
-    });
+    navigate(`/patient/document/${doc.id}`);
   };
 
   return (
@@ -86,7 +83,6 @@ const PatientDocumentHistory = () => {
                   <SelectGroup>
                     <SelectItem value="all">All</SelectItem>
                     <SelectItem value="available">Available</SelectItem>
-                    {/* More statuses can be added here */}
                   </SelectGroup>
                 </SelectContent>
               </Select>
