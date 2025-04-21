@@ -4,8 +4,10 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileText, Search, Clock } from "lucide-react";
+import { FileText, Search, Clock, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 
 // Example patient document history data
 const patientDocuments = [
@@ -54,6 +56,13 @@ const PatientDocumentHistory = () => {
     }).format(date);
   };
 
+  const handleViewDocument = (doc: typeof patientDocuments[0]) => {
+    toast({
+      title: "Viewing Document",
+      description: `You're viewing "${doc.documentName}". (Demo only, actual PDF not available.)`,
+    });
+  };
+
   return (
     <DashboardLayout title="Document History">
       <Card className="mb-6">
@@ -97,6 +106,7 @@ const PatientDocumentHistory = () => {
                 <TableHead>Document</TableHead>
                 <TableHead>Uploaded On</TableHead>
                 <TableHead>Last Accessed</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,11 +126,21 @@ const PatientDocumentHistory = () => {
                         {formatDate(doc.lastAccessed)}
                       </div>
                     </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleViewDocument(doc)}
+                        className="flex items-center gap-2"
+                      >
+                        <Eye className="h-4 w-4" /> View
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center py-8">
+                  <TableCell colSpan={4} className="text-center py-8">
                     <div className="flex flex-col items-center justify-center">
                       <Search className="h-8 w-8 text-gray-300 mb-2" />
                       <p className="text-gray-500">No documents found</p>
@@ -137,4 +157,3 @@ const PatientDocumentHistory = () => {
 };
 
 export default PatientDocumentHistory;
-
